@@ -42,8 +42,17 @@ rdsToFitsDMU<-function(DMU){
 
   TUNIT<-c()
   for (i in 1:length(DMU$colnames)){
+    
+    if (unlist(lapply(DMU$cat, class))[i]=='factor'){
+      DMU$cat[,i]<-as.character(DMU$cat[,i])
+    }
+        
     ex1KeyNames<-c(ex1KeyNames, paste('TTYPE',i,sep='') , paste('TUCD',i,sep=''), paste('TCOMM',i,sep=''), paste('TNULL',i,sep=''))
-    ex1KeyValues<-cbind(ex1KeyValues, DMU$colnames[i], DMU$colucd[i], DMU$coldescription[i], 'NULL')
+    TNULL <- -999.9
+    if (tform[i]=='1J'){TNULL <- -999}
+    if (tform[i]=='16A'){TNULL <- ''}
+    
+    ex1KeyValues<-cbind(ex1KeyValues, DMU$colnames[i], DMU$colucd[i], DMU$coldescription[i], TNULL)
     ex1KeyCom<-c(ex1KeyCom, paste('Label for field ',i,sep=''), paste('UCD for field ',i,sep=''), paste('Comment for field ',i,sep=''), paste('Null value for field ',i,sep=''))
     TUNIT<-c(TUNIT, DMU$colunits[i])
     }
@@ -54,7 +63,7 @@ rdsToFitsDMU<-function(DMU){
   fileName<-paste(DMU$meta$name,'_',format(Sys.time(), "%d_%m_%Y"),'_v',DMU$meta$version,'.fits',sep='')
 
   cat('Writing table..... \n')
-  Rfits_write_table(DMU$cat, fileName, ext = 2, extname = DMU$meta$name,tunits = TUNIT, create_ext = TRUE, create_file = TRUE,overwrite_file = TRUE, table_type = 'binary', NA_replace = -999, NaN_replace = -999,Inf_replace = -999, tforms=tform)
+  Rfits_write_table(DMU$cat, fileName, ext = 2, extname = DMU$meta$name, tunits = TUNIT, create_ext = TRUE, create_file = TRUE,overwrite_file = TRUE, table_type = 'binary', NA_replace = -999.9, NaN_replace = -999.9, Inf_replace = -999.9, tforms=tform)
 
 
   cat('Adding secondary header..... \n')
