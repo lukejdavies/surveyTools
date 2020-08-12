@@ -5,12 +5,12 @@
 \title{Function for generating standardised .rds DMU formats}
 \usage{
 make_rdsDMU(DMUName, cat, summary, usrGen, contactGen, scriptGen, version,
-  coldescription, colucd, colunits, README, test = FALSE)
+  coldescription, colucd, colunits, README, add = NA, test = FALSE)
 }
 \arguments{
 \item{DMUName}{Name for the DMU}
 
-\item{cat}{data.frame of catalogue data to add to DMU}
+\item{cat}{data.frame of catalogue data to add to DMU. Column names should be correct for your DMU file.}
 
 \item{summary}{a 1/2 sentence overview description of your DMU}
 
@@ -30,6 +30,8 @@ make_rdsDMU(DMUName, cat, summary, usrGen, contactGen, scriptGen, version,
 
 \item{README}{# a string README for the catalogue (please separate lines with \n}
 
+\item{add}{list of additional sublists you wish to be added to the DMU.}
+
 \item{test}{TRUE/FLASE - If true catalogue can be run with dummy values (see example) and not give errors}
 }
 \value{
@@ -37,6 +39,9 @@ a list containing the DMU. The DMU will also be written out as a .rds file with 
 }
 \description{
 Takes a catalogue and various meta data/column information and writes out a standardised Data Management Unit (DMU) data product as a .rds file.
+}
+\examples{
+DMUName<-'dummy'
 }
 \author{
 L. Davies <luke.j.davies@uwa.edu>

@@ -15,6 +15,9 @@ a FITS file with the format: DMUName,'_',format(Sys.time(), "%d_%m_%Y"),'_v',ver
 \description{
 Takes a catalogue generated using make_rdsDMU() and make it into a sensible FITS binary table.
 }
+\examples{
+MUName<-'dummy'
+}
 \author{
 L. Davies <luke.j.davies@uwa.edu>
 }
