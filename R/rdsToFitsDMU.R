@@ -20,6 +20,10 @@
 #rdsToFitsDMU(DMU)
 #' @export
 rdsToFitsDMU<-function(DMU){
+  
+  cat(' \n \n****************************************\n')
+  cat('****** CONVERTING RDS TO FITS ******')
+  cat(' \n****************************************\n \n')
 
 
   cat('Formatting table..... \n')
