@@ -23,6 +23,7 @@
 rdsToFitsDMU<-function(DMU){
 
 
+  cat('Formatting table..... \n')
   primaryKeyNames<-c(names(DMU$meta)[1:7], names(DMU$meta$RGen))
   primaryKeyValues<-c(DMU$meta[[2]],DMU$meta[[3]],DMU$meta[[4]],DMU$meta[[5]],DMU$meta[[6]],DMU$meta[[7]], DMU$meta[[8]], unlist(DMU$meta[[9]]))
   primaryKeyCom<-c('Table Summary', 'User who generated table', 'contact details of user', 'script used to generate table', 'version number of DMU table', 'date DMU was generated', 'machine used to generate table', 'platform of machine', 'architechture of machine', 'Operating System of machine', 'Full system of machine', 'status of machine', 'R version used (Major)', 'R version used (Minor)', 'Year of R version', 'Month of R version','Day of R version','svn rev', 'Coding language used', 'Full version striong of R code', 'Nickname of R version used')
@@ -32,10 +33,12 @@ rdsToFitsDMU<-function(DMU){
   ex1KeyValues<-data.frame(DMU$meta$name,length(DMU$colnames))
   ex1KeyCom<-c('extension name','number of table fields')
 
-  tform<-unlist(lapply(DMU$cat, typeof))
+  tform<-unlist(lapply(DMU$cat, class))
   tform[which(tform=='double')]<-'1D'
+  tform[which(tform=='numeric')]<-'1D'
   tform[which(tform=='integer')]<-'1J'
   tform[which(tform=='character')]<-'16A'
+  tform[which(tform=='factor')]<-'16A'
 
   TUNIT<-c()
   for (i in 1:length(DMU$colnames)){
@@ -50,18 +53,24 @@ rdsToFitsDMU<-function(DMU){
   ex1Hdr<-data.frame(ext=1,keyvalues=ex1KeyValues,keycomments=ex1KeyCom, keynames=ex1KeyNames)
   fileName<-paste(DMU$meta$name,'_',format(Sys.time(), "%d_%m_%Y"),'_v',DMU$meta$version,'.fits',sep='')
 
+  cat('Writing table..... \n')
   Rfits_write_table(DMU$cat, fileName, ext = 2, extname = DMU$meta$name,tunits = TUNIT, create_ext = TRUE, create_file = TRUE,overwrite_file = TRUE, table_type = 'binary', NA_replace = -999, NaN_replace = -999,Inf_replace = -999, tforms=tform)
 
 
+  cat('Adding secondary header..... \n')
   for (i in 1:length(ex1KeyNames)){
     tmp<-as.matrix(ex1KeyValues[[i]])[1,1]
     Rfits_write_key(fileName, as.character(ex1KeyNames[[i]]), tmp, keycomment = as.character(ex1KeyCom[[i]]), ext = 2)
   }
+  cat('Adding srimary header..... \n')
   for (i in 1:length(primaryKeyNames)){
     tmp<-as.matrix(primaryKeyValues[[i]])[1,1]
     Rfits_write_key(fileName, as.character(primaryKeyNames[[i]]), tmp, keycomment = as.character(primaryKeyCom[[i]]), ext = 1)
   }
 
+  cat('Writing checksum..... \n')
   Rfits_write_chksum(fileName)
+  
+  cat('Done! \n')
 
 }

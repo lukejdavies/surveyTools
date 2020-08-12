@@ -60,7 +60,7 @@ make_rdsDMU<-function(DMUName, cat, summary, usrGen, contactGen, scriptGen, vers
 
                                         # Perform tests that dummy values have been updated
     if (test==F){
-        if (DMUFileName=='dummy'){
+        if (DMUName=='dummy'){
             cat('**WARNING** DMUFileName is still set to "dummy", please change \n')
             return(NULL)
         }
@@ -76,11 +76,11 @@ make_rdsDMU<-function(DMUName, cat, summary, usrGen, contactGen, scriptGen, vers
             cat('**WARNING** DMU$meta$contactGen is still set to dummy value, please change \n')
             return(NULL)
         }
-        if (DMU$meta$coldescription[1]=='This is column1, it has column1-like things in it - maybe an ID'){
+        if (DMU$coldescription[1]=='This is column1, it has column1-like things in it - maybe an ID'){
             cat('**WARNING** DMU$meta$coldescription is still set to dummy value, please change \n')
             return(NULL)
         }
-        if (DMU$meta$README=='The is a README that describes this table. I can put in lots of information about hot the catalogue is generated and its providance. If I wane to start a new line, I should use \n. Or I can skip lines with \n\n. This way if someone wants to read it, they can easily do cat(DMU$README)'){
+        if (DMU$README=='The is a README that describes this table. I can put in lots of information about hot the catalogue is generated and its providance. If I wane to start a new line, I should use \n. Or I can skip lines with \n\n. This way if someone wants to read it, they can easily do cat(DMU$README)'){
             cat('**WARNING** DMU$meta$README is still set to dummy value, please change \n')
             return(NULL)
         }
@@ -131,8 +131,9 @@ make_rdsDMU<-function(DMUName, cat, summary, usrGen, contactGen, scriptGen, vers
 
     fileName<-paste(DMUName,'_',format(Sys.time(), "%d_%m_%Y"),'_v',DMU$meta$version,'.rds',sep='')
     saveRDS(DMU, file=fileName)
-    return(DMU)
     cat('***** Finished ***** \n Catalogue generated as: ', fileName, '\n')
+    return(DMU)
+
 
 
 }
