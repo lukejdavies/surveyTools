@@ -49,6 +49,11 @@ rdsToFitsDMU<-function(DMU){
     if (unlist(lapply(DMU$cat, class))[i]=='factor'){
       DMU$cat[,i]<-as.character(DMU$cat[,i])
     }
+    
+    if (length(which(!is.na(DMU$cat[,i])))==0){
+      DMU$cat[,i] <- -999.9
+      tform[i]<-'1D'
+      }
         
     ex1KeyNames<-c(ex1KeyNames, paste('TTYPE',i,sep='') , paste('TUCD',i,sep=''), paste('TCOMM',i,sep=''), paste('TNULL',i,sep=''))
     TNULL <- -999.9
