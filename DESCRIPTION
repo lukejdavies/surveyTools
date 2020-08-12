@@ -1,0 +1,11 @@
+Package: surveyTools
+Type: Package
+Title: Tools for astronomical surveys (Specifically DEVILS)
+Version: 1.1
+Date: 2020-08-12
+Author: Luke Davies 
+Maintainer: Luke Davies <luke.j.davies@uwa.edu.au>
+Description: useful tools for managing/exploring survey data products
+License: GPL-3
+Depends: R (>= 3.00), Rfits
+RoxygenNote: 6.1.0
